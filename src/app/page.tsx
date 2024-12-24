@@ -9,21 +9,7 @@ const Home = () => {
   const [age, setAge] = useState<number | string>('');
   const [weeksLife, setWeeksLife] = useState<number[][]>([]);
   const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    const savedDob = localStorage.getItem('dob');
-    const savedAge = localStorage.getItem('age');
-    if (savedDob) setDob(savedDob);
-    if (savedAge) setAge(savedAge);
-    setIsClient(true);
-  }, []);
-
-  useEffect(() => {
-    if (isClient) {
-      localStorage.setItem('dob', dob);
-      localStorage.setItem('age', age.toString());
-    }
-  }, [dob, age, isClient]);
+  const [showWeeks, setShowWeeks] = useState(false);
 
   useEffect(() => {
     if (dob && age) {
@@ -52,8 +38,13 @@ const Home = () => {
   return (
     <div className='w-full sm:w-1/2 mx-auto'>
     <div className="p-5 font-sans flex flex-col items-center">
-    <SelectionComponent/>
-    <WeeksComponent weeksLife={weeksLife}/>
+    {!showWeeks &&
+    <>
+    <SelectionComponent dob={dob} setDob={setDob} age={age} setAge={setAge} isClient={isClient} setIsClient={setIsClient}/>
+    <button onClick={() => setShowWeeks(!showWeeks)} className='p-3 m-2 w-1/4 text-base bg-blue-500 text-white rounded-md'>Show Weeks</button>
+    </>
+    }
+    {showWeeks && <WeeksComponent weeksLife={weeksLife}/>}
     </div>
     </div>
   );

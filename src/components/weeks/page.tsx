@@ -7,16 +7,22 @@ interface PageProps {
 }
 
 const Page = ({ weeksLife }: PageProps) => {
+
+    if (weeksLife.length > 5200) {
+        weeksLife = weeksLife.slice(0, 5200);
+    }
     return (
         <div>
-            <h1>{`${
+            <div className="flex justify-center items-center">
+            <h1 className="text-xl">{weeksLife.length >0 && `${
                 100 -
                 Math.round(
                     (weeksLife.flat().filter((week) => week === 1).length /
-                        weeksLife.flat().length) *
-                        100
+                    weeksLife.flat().length) *
+                    100
                 )
             }% life remaining`}</h1>
+            </div>
 
             {weeksLife.length > 0 && (
                 <div className="grid grid-cols-52 gap-1 mt-5">
